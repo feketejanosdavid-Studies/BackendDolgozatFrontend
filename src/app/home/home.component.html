@@ -1,1 +1,42 @@
-{{movies|json}}
+<!-- {{movies|json}}
+{{newMovie|json}} -->
+
+<div class="row">
+    <div *ngFor="let columnDefs of columnDefs" class="col">
+        {{columnDefs.text}}
+    </div>
+    <div class="col">Options</div>
+</div>
+
+<div  class="row mb-2 mt-2">
+    <div *ngFor="let columnDefs of columnDefs" class="col">
+        <ng-container *ngIf="columnDefs.type!='plain'; else notchange">
+            <input [type]="columnDefs.type" class="form-control" [(ngModel)]="newMovie[columnDefs.key]">
+        </ng-container>
+        <ng-template #notchange>
+            
+        </ng-template>
+    </div>
+    <div class="col">
+        <button (click)="addMovie()" type="button" class="btn btn-outline-primary me-2">Hozzáad</button>
+    </div>
+</div>
+
+<div *ngFor="let movie of movies" class="row mb-2 mt-2">
+    <div *ngFor="let columnDef of columnDefs" class="col">
+        <ng-container *ngIf="columnDef.type !== 'plain'; else notchange">
+            <input
+              [type]="columnDef.type"
+              class="form-control"
+              [(ngModel)]="movie[columnDef.key]"
+            />
+        </ng-container>
+        <ng-template #notchange>
+            {{ movie[columnDef.key] }}
+        </ng-template>
+    </div>
+    <div class="col">
+        <button (click)="editMovie(movie)" type="button" class="btn btn-outline-success me-2">Szerkeszt</button>
+        <button (click)="deleteMovie(movie.id)" type="button" class="btn btn-outline-danger">Törlés</button>
+    </div>
+</div>
